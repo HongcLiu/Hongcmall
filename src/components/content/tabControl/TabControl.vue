@@ -28,6 +28,7 @@ export default {
   methods: {
     itemClick(index) {
       this.currentIndex = index
+      this.$emit('tabClick',index)
     }
   }
 }
@@ -40,6 +41,8 @@ export default {
     height: 40px;
     line-height: 40px;
     font-size: 15px;
+    z-index: 9;
+    background: #ffffff;
   }
 
   .tab-control-item {

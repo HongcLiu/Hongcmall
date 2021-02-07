@@ -6,7 +6,8 @@
     <home-swiper :banners="banners"></home-swiper>
     <recommend-view :recommends="recommends"></recommend-view>
     <feature-view/>
-    <tab-control :titles="['流行','新款','精选']" class="tab-control"></tab-control>
+    <tab-control :titles="['流行','新款','精选']" class="tab-control" @tabClick="tabClick"></tab-control>
+    <good-list :goodlist="showGoods" />
     <ul>
       <li></li>
       <li></li>
@@ -62,6 +63,7 @@
 <script>
 import NavBar from "components/common/navbar/NavBar";
 import TabControl from "components/content/tabControl/TabControl";
+import GoodList from "components/content/goods/GoodList";
 
 import HomeSwiper from "views/home/childComps/HomeSwiper";
 import RecommendView from "views/home/childComps/RecommendView";
@@ -74,6 +76,7 @@ export default {
   components: {
     NavBar,
     TabControl,
+    GoodList,
     HomeSwiper,
     RecommendView,
     FeatureView
@@ -86,7 +89,13 @@ export default {
         'pop': {page: 0, list: []},
         'new': {page: 0, list: []},
         'sell': {page: 0, list: []},
-      }
+      },
+      currentType: 'pop'
+    }
+  },
+  computed: {
+    showGoods() {
+      return this.goods[this.currentType].list
     }
   },
   created() {
@@ -96,6 +105,27 @@ export default {
     this.getHomeGoods('sell')
   },
   methods: {
+    /**
+     * 事件监听相关代码
+     */
+
+    tabClick(index) {
+      switch (index) {
+        case 0:
+          this.currentType = 'pop'
+          break
+        case 1:
+          this.currentType = 'new'
+          break
+        case 2:
+          this.currentType = 'sell'
+          break
+      }
+    },
+
+    /**
+     * 网络请求相关代码
+     */
     getHomeMultidata() {
       getHomeMultidata().then(res => {
         this.banners = res.data.banner.list
@@ -105,7 +135,6 @@ export default {
     getHomeGoods(type) {
       const page = this.goods[type].page + 1
       getHomeGoods(type, page).then(res => {
-        console.log(res);
         this.goods[type].list.push(...res.data.list)
         this.goods[type].page += 1
       })
