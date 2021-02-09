@@ -3,67 +3,25 @@
     <nav-bar class="home-nav">
       <div slot="center">购物车</div>
     </nav-bar>
-    <home-swiper :banners="banners"></home-swiper>
-    <recommend-view :recommends="recommends"></recommend-view>
-    <feature-view/>
-    <tab-control :titles="['流行','新款','精选']" class="tab-control" @tabClick="tabClick"></tab-control>
-    <good-list :goodlist="showGoods" />
-    <ul>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-    </ul>
+
+    <better-scroll ref="scroll" class="content">
+      <home-swiper :banners="banners"></home-swiper>
+      <recommend-view :recommends="recommends"></recommend-view>
+      <feature-view/>
+      <tab-control :titles="['流行','新款','精选']" class="tab-control" @tabClick="tabClick"></tab-control>
+      <good-list :goodlist="showGoods" />
+    </better-scroll>
+
+    <back-top @click.native="backClick"></back-top>
   </div>
 </template>
 
 <script>
 import NavBar from "components/common/navbar/NavBar";
+import BetterScroll from "components/common/bscroll/BetterScroll";
 import TabControl from "components/content/tabControl/TabControl";
 import GoodList from "components/content/goods/GoodList";
+import BackTop from "components/content/backtop/BackTop";
 
 import HomeSwiper from "views/home/childComps/HomeSwiper";
 import RecommendView from "views/home/childComps/RecommendView";
@@ -75,8 +33,10 @@ export default {
   name: "Home",
   components: {
     NavBar,
+    BetterScroll,
     TabControl,
     GoodList,
+    BackTop,
     HomeSwiper,
     RecommendView,
     FeatureView
@@ -123,6 +83,11 @@ export default {
       }
     },
 
+    backClick() {
+      this.$refs.scroll.scrollTo(0, 0);
+    },
+
+
     /**
      * 网络请求相关代码
      */
@@ -148,6 +113,8 @@ export default {
 <style scoped>
   #home {
     padding-top: 44px;
+    height: 100vh;
+    position: relative;
   }
 
   .home-nav {
@@ -165,4 +132,17 @@ export default {
     position: sticky;
     top: 44px;
   }
+
+  .content {
+    position: absolute;
+    top: 44px;
+    bottom: 49px;
+    right: 0px;
+    left: 0px;
+  }
+
+  /*.content {*/
+  /*  height: calc(100% - 93px + 51px);*/
+  /*  overflow: hidden;*/
+  /*}*/
 </style>
