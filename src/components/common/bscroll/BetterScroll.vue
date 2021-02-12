@@ -16,16 +16,41 @@ export default {
       bscroll: null
     }
   },
+  props: {
+    probeType: {
+      type: Number,
+      default() {
+        return 0
+      }
+    },
+    pullUpLoad: {
+      type: Boolean,
+      default() {
+        return false;
+      }
+    }
+  },
   // ref对于元素标签来说拿到的是元素对象
   // ref对于组件来说拿到的是组件对象
   mounted() {
     this.bscroll = new BScroll(this.$refs.wrapper, {
-      click: true
+      click: true,
+      probeType: this.probeType,
+      pullUpLoad: this.pullUpLoad
+    })
+    this.bscroll.on('scroll', position => {
+      this.$emit('scroll',position)
+    })
+    this.bscroll.on('pullingUp', () => {
+      this.$emit('pulling')
     })
   },
   methods: {
     scrollTo(x, y, time=500) {
       this.bscroll.scrollTo(x, y, time)
+    },
+    finishPullUp() {
+      this.bscroll.finishPullUp()
     }
   }
 }

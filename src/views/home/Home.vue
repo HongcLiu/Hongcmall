@@ -4,7 +4,11 @@
       <div slot="center">购物车</div>
     </nav-bar>
 
-    <better-scroll ref="scroll" class="content">
+    <better-scroll ref="scroll"
+                   class="content"
+                   :probe-type="3"
+                   @scroll="scrollClick"
+                   :pull-up-load="true" @pulling="pullingClick">
       <home-swiper :banners="banners"></home-swiper>
       <recommend-view :recommends="recommends"></recommend-view>
       <feature-view/>
@@ -12,7 +16,7 @@
       <good-list :goodlist="showGoods" />
     </better-scroll>
 
-    <back-top @click.native="backClick"></back-top>
+    <back-top @click.native="backClick" v-show="isShowBackTop"></back-top>
   </div>
 </template>
 
@@ -50,7 +54,8 @@ export default {
         'new': {page: 0, list: []},
         'sell': {page: 0, list: []},
       },
-      currentType: 'pop'
+      currentType: 'pop',
+      isShowBackTop: false
     }
   },
   computed: {
@@ -85,6 +90,15 @@ export default {
 
     backClick() {
       this.$refs.scroll.scrollTo(0, 0);
+    },
+
+    scrollClick(position) {
+      this.isShowBackTop = -position.y > 1000
+    },
+
+    pullingClick() {
+      this.getHomeGoods(this.currentType)
+      this.$refs.scroll.finishPullUp()
     },
 
 
