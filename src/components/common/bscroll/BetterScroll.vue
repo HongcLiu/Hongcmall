@@ -47,10 +47,16 @@ export default {
   },
   methods: {
     scrollTo(x, y, time=500) {
-      this.bscroll.scrollTo(x, y, time)
+      this.bscroll && this.bscroll.scrollTo(x, y, time)
     },
     finishPullUp() {
       this.bscroll.finishPullUp()
+    },
+    refresh() {
+      this.bscroll && this.bscroll.refresh()
+    },
+    getScrollY() {
+      return this.bscroll ? this.bscroll.y : 0
     }
   }
 }

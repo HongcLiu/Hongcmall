@@ -13,6 +13,10 @@ export default {
 </script>
 
 <style scoped>
+  .feature-view{
+    background-color: #fff;
+  }
+
   .feature-view img{
     width: 100%;
   }
